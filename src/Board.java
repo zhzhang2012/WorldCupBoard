@@ -27,8 +27,8 @@ public class Board {
 
     public void addMatch(Team teamA, Team teamB, int teamAGoals, int teamBGoals) {
         int gd = teamAGoals - teamBGoals;
-        teamA.setMatchResult(gd, teamAGoals, teamB);
-        teamB.setMatchResult(-gd, teamBGoals, teamA);
+        teamA.setMatchResult(gd, teamAGoals, teamB.getName());
+        teamB.setMatchResult(-gd, teamBGoals, teamA.getName());
     }
 
     public void sortBoard() {

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,19 +21,14 @@ public class Board {
         group.add(newTeam);
     }
 
-    public void addMatch(String teamAName, String teamBName, int teamAGoals, int teamBGoals) {
-        int i = 0, j = 0;
+    public Team getTeam(int num) {
+        return group.get(num);
+    }
+
+    public void addMatch(Team teamA, Team teamB, int teamAGoals, int teamBGoals) {
         int gd = teamAGoals - teamBGoals;
-        while (i < group.size()) {
-            if (group.get(i).getName().equals(teamAName))
-                break;
-        }
-        while (j < group.size()) {
-            if (group.get(j).getName().equals(teamBName))
-                break;
-        }
-        group.get(i).setMatchResult(gd, teamAGoals, group.get(j));
-        group.get(j).setMatchResult(gd, teamBGoals, group.get(i));
+        teamA.setMatchResult(gd, teamAGoals, teamB);
+        teamB.setMatchResult(-gd, teamBGoals, teamA);
     }
 
     public void sortBoard() {
@@ -40,11 +36,34 @@ public class Board {
         Collections.sort(group, rule);
     }
 
-    public Team get1stPlace() {
-        return group.get(0);
+    public void printBoard() {
+        for (int i = 3; i >= 0; i--) {
+            System.out.print(4 - i);
+            System.out.println(": " + group.get(i).getName() + " - " + group.get(i).getScore());
+        }
+        System.out.println("Teams that survive are: " + group.get(3).getName() + ", " + group.get(2).getName() + ".");
     }
 
-    public Team get2ndPlace() {
-        return group.get(1);
+    public static void main(String[] args) {
+        Board b = new Board();
+        Scanner in = new Scanner(System.in);
+        for (int i = 0; i < 4; i++) {
+            System.out.print("Please enter a new team's name: ");
+            String teamName = in.nextLine();
+            b.addTeam(teamName);
+        }
+        for (int i = 0; i < 4; i++) {
+            for (int j = i + 1; j < 4; j++) {
+                System.out.println("Now enter the result for " + b.getTeam(i).getName() +
+                        " versus " + b.getTeam(j).getName() + ":");
+                System.out.print("Please enter the goals of " + b.getTeam(i).getName() + ": ");
+                int teamAGoals = in.nextInt();
+                System.out.print("Please enter the goals of " + b.getTeam(j).getName() + ": ");
+                int teamBGoals = in.nextInt();
+                b.addMatch(b.getTeam(i), b.getTeam(j), teamAGoals, teamBGoals);
+            }
+        }
+        b.sortBoard();
+        b.printBoard();
     }
 }

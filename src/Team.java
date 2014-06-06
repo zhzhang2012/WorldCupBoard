@@ -48,25 +48,37 @@ public class Team {
         return goals;
     }
 
+    private int getMatchScore(Team t) {
+        int i;
+        for (i = 0; i < 3; i++)
+            if (opponents.get(i).equals(t.name)) break;
+        return matchesScore.get(i);
+    }
+
+    private int getMatchGd(Team t) {
+        int i;
+        for (i = 0; i < 3; i++)
+            if (opponents.get(i).equals(t.name)) break;
+        return matchesGd.get(i);
+    }
+
+    private int getMatchGoals(Team t) {
+        int i;
+        for (i = 0; i < 3; i++)
+            if (opponents.get(i).equals(t.name)) break;
+        return matchesGoals.get(i);
+    }
+
     public int compareScore(Team t) {
-        for (int i = 0; i < 3; i++)
-            if (opponents.get(i).equals(t.name))
-                return score - matchesScore.get(i);
-        return 0;
+        return this.getMatchScore(t) - t.getMatchScore(this);
     }
 
     public int compareGd(Team t) {
-        for (int i = 0; i < 3; i++)
-            if (opponents.get(i).equals(t.name))
-                return gd - matchesGd.get(i);
-        return 0;
+        return this.getMatchGd(t) - t.getMatchGd(this);
     }
 
     public int compareGoals(Team t) {
-        for (int i = 0; i < 3; i++)
-            if (opponents.get(i).equals(t.name))
-                return goals - matchesGoals.get(i);
-        return 0;
+        return this.getMatchGoals(t) - t.getMatchGoals(this);
     }
 
     public void setMatchResult(int matchGD, int matchGoals, String opponent) {
